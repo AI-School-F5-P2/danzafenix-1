@@ -4,7 +4,7 @@ from routers.rou_teachers import teacher
 from config.database import engine, Session
 from models.mod_students import ModelStudents
 from models.mod_teachers import ModelTeachers
-
+from models.mod_classes import ModelClasses
 
 #creamos una instancia de FastAPI llamada app
 app = FastAPI()
@@ -13,6 +13,7 @@ app.version = "1.0.0"
 
 ModelStudents.metadata.create_all(bind = engine)
 ModelTeachers.metadata.create_all(bind = engine)
+ModelClasses.metadata.create_all(bind = engine)
 
 #dependencia: consultar más sobre cómo usarla correctamente
 def get_db():

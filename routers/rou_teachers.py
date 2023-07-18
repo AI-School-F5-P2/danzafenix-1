@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Path
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
@@ -8,18 +8,18 @@ from config.database import Session
 from models.mod_teachers import ModelTeachers
 
 
-teacher = APIRouter()
+teacher = APIRouter(prefix = "/api/teacher", tags = ["Teachers"])
 
 
-@teacher.get("/api/teacher", response_model = List[TeacherSchema], tags = ["Teachers"], status_code = HTTP_200_OK)
+@teacher.get("/get_all", response_model = List[TeacherSchema], status_code = HTTP_200_OK)
 def get_teachers():
     db = Session()
     result = db.query(ModelTeachers).all()
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
-@teacher.get("/api/teacher/{id_teacher}", response_model = TeacherSchema, tags = ["Teachers"])
-def get_teacher(id_teacher: int):
+@teacher.get("/{id_teacher}", response_model = TeacherSchema)
+def get_teacher(id_teacher: int = Path(ge = 1)):
     db = Session()
     result = db.query(ModelTeachers).filter(ModelTeachers.id_teacher == id_teacher).first()
     if not result:
@@ -27,7 +27,7 @@ def get_teacher(id_teacher: int):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
-@teacher.post("/api/teacher", status_code = HTTP_201_CREATED, tags = ["Teachers"])
+@teacher.post("/create", status_code = HTTP_201_CREATED)
 def create_teacher(data_teacher:TeacherSchema):
     db = Session()
     new_teacher = ModelTeachers(**data_teacher.model_dump())
@@ -36,8 +36,8 @@ def create_teacher(data_teacher:TeacherSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro profesor se ha creado correctamente"})
 
 
-@teacher.put("/api/teacher/{id_teacher}", response_model = TeacherSchema, tags = ["Teachers"])
-def update_teacher(id_teacher: int, data_update: TeacherSchema):
+@teacher.put("/{id_teacher}", response_model = TeacherSchema)
+def update_teacher(data_update: TeacherSchema, id_teacher: int = Path(ge = 1)):
     db = Session()
     result = db.query(ModelTeachers).filter(ModelTeachers.id_teacher == id_teacher).first()
     if not result:
@@ -47,8 +47,8 @@ def update_teacher(id_teacher: int, data_update: TeacherSchema):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del profesor se han modificado correctamente"})
 
 
-@teacher.delete("/api/teacher/{id_teache}", status_code = HTTP_200_OK, tags = ["Teachers"])
-def delete_teacher(id_teacher: int):
+@teacher.delete("/{id_teacher}", status_code = HTTP_200_OK)
+def delete_teacher(id_teacher: int = Path(ge = 1)):
     db = Session()
     result = db.query(ModelTeachers).filter(ModelTeachers.id_teacher == id_teacher).first()
     if not result:

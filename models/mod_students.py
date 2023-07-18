@@ -12,6 +12,7 @@ class ModelStudents(Base):
     name_stu = Column(String(50), nullable = False)
     last1_stu = Column(String(50), nullable = False)
     last2_stu = Column(String(50))
+    DNI_stu = Column(String(9), unique = True, nullable = False)
     birth_date = Column(Date, nullable = False)
     age_stu = Column(Integer, nullable = False)
     tel_stu = Column(String(20))

@@ -12,7 +12,7 @@ class StudentSchema(BaseModel):
     name_stu: str
     last1_stu: str
     last2_stu: Optional[str]
-    DNI_stu: str = Field(max_length = 9)
+    DNI_stu: str = Field(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A-HJ-NP-TV-Z])$')
     birth_date: date
     age_stu: int = Field(gt = 1, lt = 110)
     tel_stu: Optional[str]

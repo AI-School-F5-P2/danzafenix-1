@@ -32,8 +32,9 @@ def get_student(id_stu: int = Path(ge = 1)):
         return JSONResponse(status_code = HTTP_404_NOT_FOUND, content = {"message": "El ID no se ha encontrado en la base de datos"})
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
+
 @student.get("/{DNI_stu}/", response_model = StudentSchema)
-def get_student_by_DNI(DNI_stu: str = Path(max_length = 9)):
+def get_student_by_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A-HJ-NP-TV-Z])$')):
     db = Session()
     result = db.query(ModelStudents).filter(ModelStudents.DNI_stu == DNI_stu).first()
     if not result:

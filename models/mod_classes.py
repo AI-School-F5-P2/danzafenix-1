@@ -9,3 +9,11 @@ class ModelClasses(Base):
 
     id_cla = Column(Integer, primary_key = True, index = True)
     name_cla = Column(String(50), nullable = False)
+
+
+class ModelLevels(Base):
+
+    __tablename__ = "Levels"
+    
+    id_level = Column(Integer, primary_key = True, index = True)
+    name_level = Column(String(50), nullable = False)

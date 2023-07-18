@@ -17,3 +17,4 @@ class ModelLevels(Base):
     
     id_level = Column(Integer, primary_key = True, index = True)
     name_level = Column(String(50), nullable = False)
+

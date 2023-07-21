@@ -9,6 +9,7 @@ class ModelClasses(Base):
 
     id_cla = Column(Integer, primary_key = True, index = True)
     name_cla = Column(String(50), nullable = False)
+    levels1 = relationship("ModelLevels", secondary = "classes-levels", back_populates = "classes1")
 
 
 class ModelLevels(Base):
@@ -17,4 +18,14 @@ class ModelLevels(Base):
     
     id_level = Column(Integer, primary_key = True, index = True)
     name_level = Column(String(50), nullable = False)
+    classes1 = relationship("ModelClasses", secondary = "classes-levels", back_populates = "levels1")
 
+
+class ClassesLevels(Base):
+
+    __tablename__ = "classes-levels"
+
+    id_cla1 = Column(Integer, ForeignKey("classes.id_cla"), primary_key = True)
+    id_level1 = Column(Integer, ForeignKey("Levels.id_level"), primary_key = True)
+    classes1 = relationship("ModelClasses", back_populates = "levels1")
+    levels1 = relationship("ModelLevels", back_populates = "classes1")

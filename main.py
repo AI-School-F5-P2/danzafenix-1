@@ -6,7 +6,7 @@ from routers.rou_prices import packs
 from config.database import engine, Session
 from models.mod_students import ModelStudents
 from models.mod_teachers import ModelTeachers
-from models.mod_classes import ModelClasses, ModelLevels
+from models.mod_classes import ModelClasses, ModelLevels, ClassesLevels
 from models.mod_prices import ModelPacks
 
 
@@ -19,6 +19,7 @@ ModelStudents.metadata.create_all(bind = engine)
 ModelTeachers.metadata.create_all(bind = engine)
 ModelClasses.metadata.create_all(bind = engine)
 ModelLevels.metadata.create_all(bind = engine)
+ClassesLevels.metadata.create_all(bind = engine)
 ModelPacks.metadata.create_all(bind = engine)
 
 

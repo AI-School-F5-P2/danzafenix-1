@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship, column_property
 from config.database import Base
 
+
 class ModelPacks(Base):
 
     __tablename__ = "packs"

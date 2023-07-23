@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class ClassSchema(BaseModel):
     name_cla: str
 

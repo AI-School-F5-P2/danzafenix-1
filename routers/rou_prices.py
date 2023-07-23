@@ -8,7 +8,6 @@ from config.database import Session
 from models.mod_prices import ModelPacks
 
 
-
 packs = APIRouter(prefix = "/api/packs", tags = ["Packs"])
 
 

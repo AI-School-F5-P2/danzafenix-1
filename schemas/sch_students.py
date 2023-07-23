@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from datetime import date
 from typing import Optional
 
+
 #los archivos schemas (esquemas) sirven para validar y serializar objetos:
 #la validación de objetos se refiere a asegurarse de que los datos proporcionados 
 #cumplan con ciertas reglas o restricciones predefinidas. Esto implica verificar que los valores proporcionados sean del tipo correcto.

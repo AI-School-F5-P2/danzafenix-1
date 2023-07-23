@@ -33,4 +33,4 @@ class ClassesLevels(Base):
     levels1 = relationship("ModelLevels", back_populates = "classes1")
     id_pac1 = Column(Integer, ForeignKey("packs.id_pac"))
     packs1 = relationship("ModelPacks", back_populates = "class_level")
-
+    students1 = relationship("ModelStudents", secondary = "students-classes", back_populates = "classes_levels1")

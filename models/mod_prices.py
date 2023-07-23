@@ -9,6 +9,8 @@ class ModelPacks(Base):
     id_pac = Column(Integer, primary_key = True, index = True)
     name_pac = Column(String(50), nullable = False)
     class_level = relationship("ClassesLevels", back_populates = "packs1")
+    price = relationship("ModelPrices", back_populates = "pack")
+    id_pd1 = Column(Integer, ForeignKey("prices-discounts.id_pd"))
 
 
 class ModelPrices(Base):
@@ -22,3 +24,4 @@ class ModelPrices(Base):
     price2 = column_property((individual_price*(100 - discount2))/100)
     discount3 = Column(Float, nullable = False, default = 0)
     price3 = column_property((individual_price*(100 - discount3))/100)
+    pack = relationship("ModelPacks", back_populates = "price")

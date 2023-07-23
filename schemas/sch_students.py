@@ -24,3 +24,10 @@ class StudentSchema(BaseModel):
         json_schema_extra = {"example": {"name_stu": "Nombre", "last1_stu": "Primer Apellido", "last2_stu": "Segundo Apellido",
                                     "DNI_stu": "12345678L", "birth_date": "2023-07-18", "age_stu": 20, "tel_stu": "+3412345678", 
                                     "mail_stu": "nombre156@gmail.com", "active_stu": True, "fam_discount": False}}
+
+
+class StudentClassSchema(BaseModel):
+    id_stu1: int = Field(ge = 1)
+    id_cla_level1: int = Field(ge = 1)
+    registration_date: date
+    active_stu_cla: bool = Field(default = True)

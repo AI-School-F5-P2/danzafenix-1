@@ -9,14 +9,14 @@ class ModelPacks(Base):
 
     id_pac = Column(Integer, primary_key = True, index = True)
     name_pac = Column(String(50), nullable = False)
-    class_level = relationship("ClassesLevels", back_populates = "packs1")
+    id_pd1 = Column(Integer, ForeignKey("prices_discounts.id_pd"))
+    class_level1 = relationship("ClassesLevels", back_populates = "packs1")
     price = relationship("ModelPrices", back_populates = "pack")
-    id_pd1 = Column(Integer, ForeignKey("prices-discounts.id_pd"))
 
 
 class ModelPrices(Base):
 
-    __tablename__ = "prices-discounts"
+    __tablename__ = "prices_discounts"
 
     id_pd = Column(Integer, primary_key = True, index = True)
     type_pd = Column(String(50))

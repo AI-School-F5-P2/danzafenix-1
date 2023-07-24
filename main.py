@@ -11,6 +11,7 @@ from models.mod_prices import ModelPacks, ModelPrices
 from fenix_example import data_teachers, data_classes, data_levels, data_packs, data_prices, data_classes_levels_packs, data_students, data_students_classes
 import os
 
+
 #creamos una instancia de FastAPI llamada app
 app = FastAPI()
 app.title = "Danza Fénix"
@@ -41,7 +42,7 @@ def tables_completion():
     #comprobamos si el archivo "database_initialized.txt" existe
     if os.path.exists("database_initialized.txt"):
         print("La base de datos ya está inicializada. No se realizará la inserción de datos nuevamente.")
-        exit()
+        return
     
     for data in data_teachers:
         teacher = ModelTeachers(**data)

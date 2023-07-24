@@ -59,7 +59,6 @@ def delete_class(id_cla: int = Path(ge = 1)):
 
 
 
-
 levels = APIRouter(prefix = "/api/level", tags = ["Levels"])
 
 

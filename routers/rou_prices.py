@@ -56,4 +56,3 @@ def delete_pack(id_pac: int = Path(ge = 1)):
     db.delete(result)
     db.commit()
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Se ha eliminado el registro correctamente"})
-

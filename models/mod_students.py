@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Date, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from config.database import Base
 
@@ -20,6 +20,7 @@ class ModelStudents(Base):
     active_stu = Column(Boolean, default = True, nullable = False)
     fam_discount = Column(Boolean, default = False, nullable = False)
     classes_levels = relationship("StudentsClasses", back_populates = "students")
+    invoices = relationship("ModelInvoices", back_populates = "students1")
 
 
 class StudentsClasses(Base):

@@ -8,6 +8,7 @@ from models.mod_students import ModelStudents, StudentsClasses
 from models.mod_teachers import ModelTeachers
 from models.mod_classes import ModelClasses, ModelLevels, ClassesLevels
 from models.mod_prices import ModelPacks, ModelPrices
+from fenix_example import data_teachers, data_classes, data_levels, data_packs, data_prices, data_classes_levels_packs, data_students, data_students_classes
 
 
 #creamos una instancia de FastAPI llamada app
@@ -31,3 +32,12 @@ app.include_router(teacher)
 app.include_router(classes)
 app.include_router(levels)
 app.include_router(packs)
+
+
+def tables_completion():
+    db = Session()
+
+    for data in data_teachers:
+        db.add(ModelTeachers(**data))
+
+tables_completion()

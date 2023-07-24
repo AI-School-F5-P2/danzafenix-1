@@ -55,6 +55,7 @@ def create_student(data_student:StudentSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro estudiante se ha creado correctamente"})
 
 
+
 @student.put("/{id_stu}", response_model = StudentSchema)
 def update_student(data_update: StudentSchema, id_stu: int = Path(ge = 1)):
     db = Session()

@@ -9,7 +9,7 @@ from models.mod_teachers import ModelTeachers
 from models.mod_classes import ModelClasses, ModelLevels, ClassesLevels
 from models.mod_prices import ModelPacks, ModelPrices
 from fenix_example import data_teachers, data_classes, data_levels, data_packs, data_prices, data_classes_levels_packs, data_students, data_students_classes
-
+import os
 
 #creamos una instancia de FastAPI llamada app
 app = FastAPI()
@@ -35,9 +35,55 @@ app.include_router(packs)
 
 
 def tables_completion():
+    
     db = Session()
-
+    
+    #comprobamos si el archivo "database_initialized.txt" existe
+    if os.path.exists("database_initialized.txt"):
+        print("La base de datos ya está inicializada. No se realizará la inserción de datos nuevamente.")
+        exit()
+    
     for data in data_teachers:
-        db.add(ModelTeachers(**data))
+        teacher = ModelTeachers(**data)
+        db.add(teacher)
+        db.commit()
+
+    for data in data_classes:
+        classes = ModelClasses(**data)
+        db.add(classes)
+        db.commit()
+
+    for data in data_levels:
+        level = ModelLevels(**data)
+        db.add(level)
+        db.commit()
+    
+    for data in data_prices:
+        price = ModelPrices(**data)
+        db.add(price)
+        db.commit()
+    
+    for data in data_packs:
+        pack = ModelPacks(**data)
+        db.add(pack)
+        db.commit()
+
+    for data in data_students:
+        student = ModelStudents(**data)
+        db.add(student)
+        db.commit()
+    
+    for data in data_classes_levels_packs:
+        cla_level_pack = ClassesLevels(**data)
+        db.add(cla_level_pack)
+        db.commit()
+    
+    for data in data_students_classes:
+        student_cla_level = StudentsClasses(**data)
+        db.add(student_cla_level)
+        db.commit()
+    
+    with open("database_initialized.txt", "w") as file:
+        file.write("La base de datos está inicializada.")
 
 tables_completion()

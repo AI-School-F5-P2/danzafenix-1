@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, Date, Boolean, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, Float, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from config.database import Base
-from models.mod_classes import ClassesLevels
 
 
 #tabla estudiantes: incluye las distintas columnas y el tipo de dato que debería tener cada una
@@ -20,7 +19,7 @@ class ModelStudents(Base):
     mail_stu = Column(String(100), nullable = False)
     active_stu = Column(Boolean, default = True, nullable = False)
     fam_discount = Column(Boolean, default = False, nullable = False)
-    classes_levels1 = relationship("StudentsClasses", back_populates = "students1")
+    classes_levels = relationship("StudentsClasses", back_populates = "students")
 
 
 class StudentsClasses(Base):
@@ -32,5 +31,5 @@ class StudentsClasses(Base):
     id_cla_level1 = Column(Integer, ForeignKey("classes_levels.id_cla_level"))
     registration_date = Column(Date, nullable = False)
     active_stu_cla = Column(Boolean, default = True, nullable = False)
-    students1 = relationship("ModelStudents", back_populates = "classes_levels1")
-    classes_levels1 = relationship("ClassesLevels", back_populates = "students1")
+    students = relationship("ModelStudents", back_populates = "classes_levels")
+    classes_levels = relationship("ClassesLevels", back_populates = "students")

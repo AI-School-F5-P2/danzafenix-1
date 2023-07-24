@@ -1,8 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from config.database import Base
-from models.mod_prices import ModelPacks
-from models.mod_students import students_classes
 
 
 class ModelClasses(Base):
@@ -33,5 +31,5 @@ class ClassesLevels(Base):
    id_pac1 = Column(Integer, ForeignKey("packs.id_pac"))
    classes1 = relationship("ModelClasses", back_populates = "levels1")
    levels1 = relationship("ModelLevels", back_populates = "classes1")
-   students1 = relationship("StudentsClasses", back_populates = "classes_levels1")
+   students = relationship("StudentsClasses", back_populates = "classes_levels")
    packs1 = relationship("ModelPacks", back_populates = "class_level1")

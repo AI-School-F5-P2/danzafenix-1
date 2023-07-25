@@ -64,9 +64,9 @@ data_students = [{"name_stu": "Catalina", "last1_stu": "de", "last2_stu": "Arag√
                   "active_stu": True, "fam_discount": False}]
 
 
-data_students_classes = [{"id_stu1": 1, "id_cla_level1": 3, "registration_date": "2023-03-07", "active_stu_cla": True},
-                         {"id_stu1": 1, "id_cla_level1": 4, "registration_date": "2023-03-07", "active_stu_cla": True},
-                         {"id_stu1": 1, "id_cla_level1": 5, "registration_date": "2023-03-07", "active_stu_cla": True},
-                         {"id_stu1": 1, "id_cla_level1": 8, "registration_date": "2023-03-07", "active_stu_cla": True},
-                         {"id_stu1": 1, "id_cla_level1": 17, "registration_date": "2023-03-07", "active_stu_cla": True},
-                         {"id_stu1": 1, "id_cla_level1": 10, "registration_date": "2023-03-07", "active_stu_cla": True}]
+data_students_classes = [{"id_stu1": 1, "id_cla_level1": 3, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 1, "id_cla_level1": 4, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 1, "id_cla_level1": 5, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 1, "id_cla_level1": 8, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 1, "id_cla_level1": 17, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 1, "id_cla_level1": 10, "registration_date": "2023-03-01", "active_stu_cla": True}]

@@ -3,9 +3,9 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
 from starlette.status import HTTP_201_CREATED, HTTP_200_OK, HTTP_404_NOT_FOUND
-from schemas.sch_students import StudentSchema
+from schemas.sch_students import StudentSchema, StudentClassSchema
 from config.database import Session
-from models.mod_students import ModelStudents
+from models.mod_students import ModelStudents, StudentsClasses
 
 
 student = APIRouter(prefix = "/api/student", tags = ["Students"])
@@ -79,6 +79,60 @@ def update_student(data_update: StudentSchema, id_stu: int = Path(ge = 1)):
 def delete_student(id_stu: int = Path(ge = 1)):
     db = Session()
     result = db.query(ModelStudents).filter(ModelStudents.id_stu == id_stu).first()
+    if not result:
+        return JSONResponse(status_code = HTTP_404_NOT_FOUND, content = {"message": "El ID no se ha encontrado en la base de datos"})
+    db.delete(result)
+    db.commit()
+    return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Se ha eliminado el registro correctamente"})
+
+
+
+student_class = APIRouter(prefix = "/api/student_class", tags = ["Students - Classes"])
+
+
+@student_class.get("/get_all", response_model = List[StudentClassSchema], status_code = HTTP_200_OK)
+def get_students_classes():
+    db = Session()
+    result = db.query(StudentsClasses).all()
+    return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
+
+
+@student_class.get("/{id_stu1}", response_model = List[StudentClassSchema])
+def get_student_classes(id_stu1: int = Path(ge = 1)):
+    db = Session()
+    result = db.query(StudentsClasses).filter(StudentsClasses.id_stu1 == id_stu1).all()
+    if not result:
+        return JSONResponse(status_code = HTTP_404_NOT_FOUND, content = {"message": "El ID no se ha encontrado en la base de datos"})
+    return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
+
+
+@student_class.post("/create", status_code = HTTP_201_CREATED)
+def create_student_class(data_student_class: StudentClassSchema):
+    db = Session()
+    new_student_class = StudentsClasses(**data_student_class.model_dump())
+    db.add(new_student_class)
+    db.commit()
+    return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro estudiante y su respectiva clase se ha creado correctamente"})
+
+
+@student_class.put("/{id_stu1}", response_model = StudentSchema)
+def update_student(data_update: StudentClassSchema, id_stu1: int = Path(ge = 1)):
+    db = Session()
+    result = db.query(StudentsClasses).filter(StudentsClasses.id_stu1 == id_stu1).first()
+    if not result:
+        return JSONResponse(status_code = HTTP_404_NOT_FOUND, content = {"message": "El ID no se ha encontrado en la base de datos"})
+    result.id_stu1 = data_update.id_stu1
+    result.id_cla_level1 = data_update.id_cla_level1
+    result.registration_date = data_update.registration_date
+    result.active_stu_cla = data_update.active_stu_cla
+    db.commit()
+    return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del estudiante y su respectiva clase se han modificado correctamente"})
+
+
+@student_class.delete("/{id_stu1}", status_code = HTTP_200_OK)
+def delete_student_class(id_stu1: int = Path(ge = 1)):
+    db = Session()
+    result = db.query(StudentsClasses).filter(StudentsClasses.id_stu1 == id_stu1).first()
     if not result:
         return JSONResponse(status_code = HTTP_404_NOT_FOUND, content = {"message": "El ID no se ha encontrado en la base de datos"})
     db.delete(result)

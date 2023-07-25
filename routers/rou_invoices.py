@@ -115,6 +115,11 @@ def invoice_calculation(id_stu1):
                 tot_month += individual_price + price2 + ((y - 2)*price3)
             else:
                 tot_month = tot_month
+        
+        fam_discount = db.query(ModelStudents.fam_discount).filter(ModelStudents.id_stu == id_stu1).first()
+        
+        if fam_discount == True:
+            tot_month = 0.9*tot_month
         return tot_month
 
     except ValueError:

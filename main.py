@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers.rou_students import student
+from routers.rou_students import student, student_class
 from routers.rou_teachers import teacher
 from routers.rou_classes import classes, levels
 from routers.rou_prices import packs, prices
@@ -38,6 +38,7 @@ app.include_router(levels)
 app.include_router(packs)
 app.include_router(prices)
 app.include_router(invoices)
+app.include_router(student_class)
 
 
 #datos de ejemplo para hacer verificaciones del funcionamiento del programa

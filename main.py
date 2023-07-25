@@ -2,12 +2,14 @@ from fastapi import FastAPI
 from routers.rou_students import student
 from routers.rou_teachers import teacher
 from routers.rou_classes import classes, levels
-from routers.rou_prices import packs
+from routers.rou_prices import packs, prices
+from routers.rou_invoices import invoices
 from config.database import engine, Session
 from models.mod_students import ModelStudents, StudentsClasses
 from models.mod_teachers import ModelTeachers
 from models.mod_classes import ModelClasses, ModelLevels, ClassesLevels
 from models.mod_prices import ModelPacks, ModelPrices
+from models.mod_invoices import ModelInvoices
 from fenix_example import data_teachers, data_classes, data_levels, data_packs, data_prices, data_classes_levels_packs, data_students, data_students_classes
 import os
 
@@ -26,6 +28,7 @@ ClassesLevels.metadata.create_all(bind = engine)
 ModelPacks.metadata.create_all(bind = engine)
 ModelPrices.metadata.create_all(bind = engine)
 StudentsClasses.metadata.create_all(bind = engine)
+ModelInvoices.metadata.create_all(bind = engine)
 
 
 app.include_router(student)
@@ -33,8 +36,11 @@ app.include_router(teacher)
 app.include_router(classes)
 app.include_router(levels)
 app.include_router(packs)
+app.include_router(prices)
+app.include_router(invoices)
 
 
+#datos de ejemplo para hacer verificaciones del funcionamiento del programa
 def tables_completion():
     
     db = Session()

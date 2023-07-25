@@ -2,7 +2,7 @@ from fastapi import APIRouter, Path
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
-from starlette.status import HTTP_201_CREATED, HTTP_200_OK, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_201_CREATED, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_406_NOT_ACCEPTABLE
 from schemas.sch_students import StudentSchema
 from config.database import Session
 from models.mod_students import ModelStudents
@@ -48,11 +48,13 @@ def get_student_by_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A
 @student.post("/create", status_code = HTTP_201_CREATED)
 def create_student(data_student:StudentSchema):
     db = Session()
-    new_student = ModelStudents(**data_student.model_dump())
-    #hacer control en caso de DNI repetido
-    db.add(new_student)
-    db.commit()
-    return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro estudiante se ha creado correctamente"})
+    verification = db.query(ModelStudents).filter(ModelStudents.DNI_stu == data_student.DNI_stu)
+    if not verification:
+        new_student = ModelStudents(**data_student.model_dump())
+        db.add(new_student)
+        db.commit()
+        return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro estudiante se ha creado correctamente"})
+    return JSONResponse(status_code=HTTP_406_NOT_ACCEPTABLE, content = {"message": "El DNI ya se ha registrado previamente"})
 
 
 

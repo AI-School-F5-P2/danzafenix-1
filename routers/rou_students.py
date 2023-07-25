@@ -48,7 +48,7 @@ def get_student_by_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A
 @student.post("/create", status_code = HTTP_201_CREATED)
 def create_student(data_student:StudentSchema):
     db = Session()
-    verification = db.query(ModelStudents).filter(ModelStudents.DNI_stu == data_student.DNI_stu)
+    verification = db.query(ModelStudents).filter(ModelStudents.DNI_stu == data_student.DNI_stu).first()
     if not verification:
         new_student = ModelStudents(**data_student.model_dump())
         db.add(new_student)

@@ -9,6 +9,7 @@ from config.database import Session
 from models.mod_students import ModelStudents, StudentsClasses
 from models.mod_classes import ModelClasses, ModelLevels, ClassesLevels
 from sqlalchemy import extract
+import logging
 
 
 #CRUD de la tabla principal Estudiantes
@@ -24,6 +25,7 @@ def root():
 #READ
 @student.get("/get_all", response_model = List[StudentSchema], status_code = HTTP_200_OK)
 def get_students():
+    logging.info("Se ha recibido una solicitud para obtener los estudiantes")
     db = Session()
     result = db.query(ModelStudents).all()
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
@@ -32,6 +34,7 @@ def get_students():
 #READ utilizando la clave primaria para filtrar a un estudiante en específico
 @student.get("/{id_stu}", response_model = StudentSchema)
 def get_student(id_stu: int = Path(ge = 1)):
+    logging.info(f"Se ha recibido una solicitud para obtener a un estudiante con ID {id_stu}")
     db = Session()
     result = db.query(ModelStudents).filter(ModelStudents.id_stu == id_stu).first()
     if not result:
@@ -43,6 +46,7 @@ def get_student(id_stu: int = Path(ge = 1)):
 #La validación de query tiene una expresión regular para el campo DNI_stu
 @student.get("/{DNI_stu}/", response_model = StudentSchema)
 def get_student_by_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A-HJ-NP-TV-Z])$')):
+    logging.info(f"Se ha recibido una solicitud para obtener a un estudiante con DNI {DNI_stu}")
     db = Session()
     result = db.query(ModelStudents).filter(ModelStudents.DNI_stu == DNI_stu).first()
     if not result:
@@ -55,6 +59,7 @@ def get_student_by_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A
 #new_student = ModelStudents(**data_student.model_dump()). Los ** indica que se toman todos los datos como parámetros
 @student.post("/create", status_code = HTTP_201_CREATED)
 def create_student(data_student: StudentSchema):
+    logging.info("Se ha recibido una solicitud para crear un registro de estudiante")
     db = Session()
     verification = db.query(ModelStudents).filter(ModelStudents.DNI_stu == data_student.DNI_stu).first()
     if not verification:
@@ -68,6 +73,7 @@ def create_student(data_student: StudentSchema):
 #UPDATE
 @student.put("/{id_stu}", response_model = StudentSchema)
 def update_student(data_update: StudentSchema, id_stu: int = Path(ge = 1)):
+    logging.info("Se ha recibido una solicitud para actualizar un registro de estudiante")
     db = Session()
     result = db.query(ModelStudents).filter(ModelStudents.id_stu == id_stu).first()
     if not result:
@@ -89,6 +95,7 @@ def update_student(data_update: StudentSchema, id_stu: int = Path(ge = 1)):
 #DELETE
 @student.delete("/{id_stu}", status_code = HTTP_200_OK)
 def delete_student(id_stu: int = Path(ge = 1)):
+    logging.info("Se ha recibido una solicitud para eliminar un registro de estudiante")
     db = Session()
     result = db.query(ModelStudents).filter(ModelStudents.id_stu == id_stu).first()
     if not result:
@@ -106,6 +113,7 @@ student_class = APIRouter(prefix = "/api/student_class", tags = ["Students - Cla
 #READ
 @student_class.get("/get_all", response_model = List[StudentClassSchema], status_code = HTTP_200_OK)
 def get_students_classes():
+    logging.info("Se ha recibido una solicitud para obtener los estudiantes y sus clases")
     db = Session()
     result = db.query(StudentsClasses).all()
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
@@ -114,6 +122,7 @@ def get_students_classes():
 #READ utilizando la clave primaria para filtrar a un estudiante y sus respectivas clases en específico
 @student_class.get("/{id_stu1}", response_model = List[StudentClassSchema])
 def get_student_classes(id_stu1: int = Path(ge = 1)):
+    logging.info(f"Se ha recibido una solicitud para obtener a un estudiante y sus clases con ID {id_stu1}")
     db = Session()
     result = db.query(StudentsClasses).filter(StudentsClasses.id_stu1 == id_stu1).all()
     if not result:
@@ -124,6 +133,7 @@ def get_student_classes(id_stu1: int = Path(ge = 1)):
 #CREATE
 @student_class.post("/create", status_code = HTTP_201_CREATED)
 def create_student_class(data_student_class: StudentClassSchema):
+    logging.info("Se ha recibido una solicitud para crear un registro de estudiante y clases")
     db = Session()
     new_student_class = StudentsClasses(**data_student_class.model_dump())
     db.add(new_student_class)
@@ -134,6 +144,7 @@ def create_student_class(data_student_class: StudentClassSchema):
 #UPDATE
 @student_class.put("/{id_stu1}/{id_cla_level1}", response_model = StudentSchema)
 def update_student(data_update: StudentClassSchema, id_stu1: int = Path(ge = 1), id_cla_level1: int = Path(ge = 1)):
+    logging.info("Se ha recibido una solicitud para actualizar un registro de estudiante y clases")
     db = Session()
     result = db.query(StudentsClasses).filter(StudentsClasses.id_stu1 == id_stu1, StudentsClasses.id_cla_level1 == id_cla_level1).first()
     if not result:
@@ -149,6 +160,7 @@ def update_student(data_update: StudentClassSchema, id_stu1: int = Path(ge = 1),
 #DELETE
 @student_class.delete("/{id_stu1}/{id_cla_level1}", status_code = HTTP_200_OK)
 def delete_student_class(id_stu1: int = Path(ge = 1), id_cla_level1: int = Path(ge = 1)):
+    logging.info("Se ha recibido una solicitud para eliminar un registro de estudiante y clases")
     db = Session()
     result = db.query(StudentsClasses).filter(StudentsClasses.id_stu1 == id_stu1, StudentsClasses.id_cla_level1 == id_cla_level1).first()
     if not result:
@@ -163,6 +175,7 @@ def delete_student_class(id_stu1: int = Path(ge = 1), id_cla_level1: int = Path(
 #El bucle For se utiliza para convertir la query en una lista de diccionarios
 @student_class.get("/by_month/{year}/{month}/", response_model = List[RegistrationSchema], status_code = HTTP_200_OK)
 def students_classes_by_month(year: int, month: int = Path(ge = 1, le = 12)):
+    logging.info(f"Se ha recibido una solicitud para obtener los estudiantes y clases del año: {year} y el mes: {month}")
     db = Session()
     result = db.query(ModelStudents.name_stu, ModelStudents.DNI_stu, ModelClasses.name_cla, ModelLevels.name_level
                       ).join(StudentsClasses, ModelStudents.id_stu == StudentsClasses.id_stu1
@@ -178,4 +191,5 @@ def students_classes_by_month(year: int, month: int = Path(ge = 1, le = 12)):
             "DNI_stu": DNI_stu,
             "name_cla": name_cla,
             "name_level": name_level})
+        logging.info(f"Los datos convertidos son: {name_stu}, {DNI_stu}, {name_cla}, {name_level}")
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(response_data))

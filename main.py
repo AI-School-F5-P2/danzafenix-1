@@ -11,8 +11,13 @@ from models.mod_teachers import ModelTeachers
 from models.mod_classes import ModelClasses, ModelLevels, ClassesLevels
 from models.mod_prices import ModelPacks, ModelPrices
 from models.mod_invoices import ModelInvoices
+import logging
 from fenix_example import data_teachers, data_classes, data_levels, data_packs, data_prices, data_classes_levels_packs, data_students, data_students_classes
 import os
+
+
+#Creación del archivo logging para trazabilidad
+logging.basicConfig(filename = "logfenix.log", level = logging.DEBUG, format = '%(asctime)s - %(levelname)s - %(message)s', datefmt = '%Y/%m/%d %I:%M:%S %p')
 
 
 #Creación de una instancia de FastAPI llamada app junto con su título y su versión
@@ -32,6 +37,7 @@ ModelPacks.metadata.create_all(bind = engine)
 ModelPrices.metadata.create_all(bind = engine)
 StudentsClasses.metadata.create_all(bind = engine)
 ModelInvoices.metadata.create_all(bind = engine)
+logging.debug("Creación correcta de tablas")
 
 
 #Se incluyen las rutas creadas en la carpeta routers para cada una de las entidades
@@ -43,6 +49,7 @@ app.include_router(packs)
 app.include_router(prices)
 app.include_router(invoices)
 app.include_router(student_class)
+logging.info("Creación de rutas")
 
 
 def tables_completion():
@@ -101,5 +108,6 @@ def tables_completion():
     
     with open("database_initialized.txt", "w") as file:
         file.write("La base de datos está inicializada.")
+        logging.info("Inicialización de la base de datos con las tablas de ejemplo")
 
 tables_completion()

@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, column_property
 from config.database import Base
 
 
+#Tabla principal de Packs
 class ModelPacks(Base):
 
     __tablename__ = "packs"
@@ -14,6 +15,7 @@ class ModelPacks(Base):
     price = relationship("ModelPrices", back_populates = "pack")
 
 
+#Tabla principal de Precios. Las columnas price2 y price3 se calculan a partir de otras columnas a través del método column_property
 class ModelPrices(Base):
 
     __tablename__ = "prices_discounts"

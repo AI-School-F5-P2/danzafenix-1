@@ -11,15 +11,17 @@ from models.mod_classes import ModelClasses, ModelLevels, ClassesLevels
 from sqlalchemy import extract
 
 
+#CRUD de la tabla principal Estudiantes
 student = APIRouter(prefix = "/api/student", tags = ["Students"])
 
 
-#creamos la ruta raíz para probar que la API funciona
+#Prueba rápida para verificar que la ruta raíz funciona
 @student.get("/")
 def root():
-    return {"message": "Hola, soy una nueva ruta"}
+    return {"message": "La API Danza Fénix contiene todos los endpoints para gestionar la base de datos de la Academia y facilitar la facturación"}
 
 
+#READ
 @student.get("/get_all", response_model = List[StudentSchema], status_code = HTTP_200_OK)
 def get_students():
     db = Session()
@@ -27,6 +29,7 @@ def get_students():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar a un estudiante en específico
 @student.get("/{id_stu}", response_model = StudentSchema)
 def get_student(id_stu: int = Path(ge = 1)):
     db = Session()
@@ -36,6 +39,8 @@ def get_student(id_stu: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando el DNI para filtrar a un estudiante en específico
+#La validación de query tiene una expresión regular para el campo DNI_stu
 @student.get("/{DNI_stu}/", response_model = StudentSchema)
 def get_student_by_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A-HJ-NP-TV-Z])$')):
     db = Session()
@@ -45,9 +50,9 @@ def get_student_by_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
-#con la ruta post podemos dar de alta a un nuevo estudiante en la base de datos
-#pasamos como parámetro el esquema Student para hacer la validación de tipos
-#new_student = ModelStudents(**data_student.model_dump()). Los **indica que tomamos todos los datos como parámetros
+#CREATE
+#Se pasa como parámetro el StudentSchema para hacer la validación de tipos
+#new_student = ModelStudents(**data_student.model_dump()). Los ** indica que se toman todos los datos como parámetros
 @student.post("/create", status_code = HTTP_201_CREATED)
 def create_student(data_student: StudentSchema):
     db = Session()
@@ -60,6 +65,7 @@ def create_student(data_student: StudentSchema):
     return JSONResponse(status_code = HTTP_406_NOT_ACCEPTABLE, content = {"message": "El DNI ya se ha registrado previamente"})
 
 
+#UPDATE
 @student.put("/{id_stu}", response_model = StudentSchema)
 def update_student(data_update: StudentSchema, id_stu: int = Path(ge = 1)):
     db = Session()
@@ -80,6 +86,7 @@ def update_student(data_update: StudentSchema, id_stu: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del estudiante se han modificado correctamente"})
 
 
+#DELETE
 @student.delete("/{id_stu}", status_code = HTTP_200_OK)
 def delete_student(id_stu: int = Path(ge = 1)):
     db = Session()
@@ -92,9 +99,11 @@ def delete_student(id_stu: int = Path(ge = 1)):
 
 
 
+#CRUD de la tabla intermedia EstudiantesClases
 student_class = APIRouter(prefix = "/api/student_class", tags = ["Students - Classes"])
 
 
+#READ
 @student_class.get("/get_all", response_model = List[StudentClassSchema], status_code = HTTP_200_OK)
 def get_students_classes():
     db = Session()
@@ -102,6 +111,7 @@ def get_students_classes():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar a un estudiante y sus respectivas clases en específico
 @student_class.get("/{id_stu1}", response_model = List[StudentClassSchema])
 def get_student_classes(id_stu1: int = Path(ge = 1)):
     db = Session()
@@ -111,6 +121,7 @@ def get_student_classes(id_stu1: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#CREATE
 @student_class.post("/create", status_code = HTTP_201_CREATED)
 def create_student_class(data_student_class: StudentClassSchema):
     db = Session()
@@ -120,6 +131,7 @@ def create_student_class(data_student_class: StudentClassSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro estudiante y su respectiva clase se ha creado correctamente"})
 
 
+#UPDATE
 @student_class.put("/{id_stu1}/{id_cla_level1}", response_model = StudentSchema)
 def update_student(data_update: StudentClassSchema, id_stu1: int = Path(ge = 1), id_cla_level1: int = Path(ge = 1)):
     db = Session()
@@ -134,6 +146,7 @@ def update_student(data_update: StudentClassSchema, id_stu1: int = Path(ge = 1),
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del estudiante y su respectiva clase se han modificado correctamente"})
 
 
+#DELETE
 @student_class.delete("/{id_stu1}/{id_cla_level1}", status_code = HTTP_200_OK)
 def delete_student_class(id_stu1: int = Path(ge = 1), id_cla_level1: int = Path(ge = 1)):
     db = Session()
@@ -145,6 +158,9 @@ def delete_student_class(id_stu1: int = Path(ge = 1), id_cla_level1: int = Path(
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Se ha eliminado el registro correctamente"})
 
 
+#READ: ingresando el año y el mes se obtiene una lista de diccionarios que contiene 
+#el nombre del estudiante y las clases en las que se inscribió en ese mes
+#El bucle For se utiliza para convertir la query en una lista de diccionarios
 @student_class.get("/by_month/{year}/{month}/", response_model = List[RegistrationSchema], status_code = HTTP_200_OK)
 def students_classes_by_month(year: int, month: int = Path(ge = 1, le = 12)):
     db = Session()

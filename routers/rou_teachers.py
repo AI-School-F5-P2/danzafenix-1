@@ -8,9 +8,11 @@ from config.database import Session
 from models.mod_teachers import ModelTeachers
 
 
+#CRUD de la tabla Profesores
 teacher = APIRouter(prefix = "/api/teacher", tags = ["Teachers"])
 
 
+#READ
 @teacher.get("/get_all", response_model = List[TeacherSchema], status_code = HTTP_200_OK)
 def get_teachers():
     db = Session()
@@ -18,6 +20,7 @@ def get_teachers():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar a un profesor en específico
 @teacher.get("/{id_teacher}", response_model = TeacherSchema)
 def get_teacher(id_teacher: int = Path(ge = 1)):
     db = Session()
@@ -27,6 +30,7 @@ def get_teacher(id_teacher: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#CREATE
 @teacher.post("/create", status_code = HTTP_201_CREATED)
 def create_teacher(data_teacher:TeacherSchema):
     db = Session()
@@ -36,6 +40,7 @@ def create_teacher(data_teacher:TeacherSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro profesor se ha creado correctamente"})
 
 
+#UPDATE
 @teacher.put("/{id_teacher}", response_model = TeacherSchema)
 def update_teacher(data_update: TeacherSchema, id_teacher: int = Path(ge = 1)):
     db = Session()
@@ -47,6 +52,7 @@ def update_teacher(data_update: TeacherSchema, id_teacher: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del profesor se han modificado correctamente"})
 
 
+#DELETE
 @teacher.delete("/{id_teacher}", status_code = HTTP_200_OK)
 def delete_teacher(id_teacher: int = Path(ge = 1)):
     db = Session()

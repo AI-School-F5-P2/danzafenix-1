@@ -1,4 +1,5 @@
-#llenamos las tablas con las especificaciones del briefing
+#Este archivo contiene datos de ejemplo para verificar que los cálculos y consultas se realizan correctamente
+#Llenamos las tablas con las especificaciones del briefing como primer ejemplo
 
 data_teachers = [{"name_teacher": "Mar"}, 
                  {"name_teacher": "Flor"},

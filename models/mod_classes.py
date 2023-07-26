@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 
 
+#Tabla principal Clases 
 class ModelClasses(Base):
 
     __tablename__ = "classes"
@@ -12,6 +13,7 @@ class ModelClasses(Base):
     levels1 = relationship("ClassesLevels", back_populates = "classes1")
 
 
+#Tabla principal Niveles
 class ModelLevels(Base):
 
     __tablename__ = "Levels"
@@ -21,6 +23,7 @@ class ModelLevels(Base):
     classes1 = relationship("ClassesLevels", back_populates = "levels1")
 
 
+#Tabla intermedia que relaciona Clases con Niveles y que a su vez se relaciona con Packs y con Estudiantes
 class ClassesLevels(Base):
    
    __tablename__ = "classes_levels"

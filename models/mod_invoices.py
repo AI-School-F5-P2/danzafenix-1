@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 
 
+#Tabla principal de Facturas. La columna tot_month se calcula con la función invoice_calculation en rou_invoices a través de la ruta Post
 class ModelInvoices(Base):
 
     __tablename__ = "invoices"

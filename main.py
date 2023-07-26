@@ -1,3 +1,4 @@
+#Importación inicial de todos los módulos y librerías
 from fastapi import FastAPI
 from routers.rou_students import student, student_class
 from routers.rou_teachers import teacher
@@ -14,12 +15,14 @@ from fenix_example import data_teachers, data_classes, data_levels, data_packs, 
 import os
 
 
-#creamos una instancia de FastAPI llamada app
+#Creación de una instancia de FastAPI llamada app junto con su título y su versión
+#Para lanzar el servidor y abrir Swagger se usa el comando uvicorn main:app --reload
 app = FastAPI()
 app.title = "Danza Fénix"
 app.version = "1.0.0"
 
 
+#Creación de todas las tablas (modelos)
 ModelStudents.metadata.create_all(bind = engine)
 ModelTeachers.metadata.create_all(bind = engine)
 ModelClasses.metadata.create_all(bind = engine)
@@ -31,6 +34,7 @@ StudentsClasses.metadata.create_all(bind = engine)
 ModelInvoices.metadata.create_all(bind = engine)
 
 
+#Se incluyen las rutas creadas en la carpeta routers para cada una de las entidades
 app.include_router(student)
 app.include_router(teacher)
 app.include_router(classes)
@@ -41,8 +45,12 @@ app.include_router(invoices)
 app.include_router(student_class)
 
 
-#datos de ejemplo para hacer verificaciones del funcionamiento del programa
 def tables_completion():
+    '''    
+    Esta función completa la base de datos con los datos de ejemplo del archivo fenix_example.py para hacer las verificaciones de funcionamiento
+    Se trata simplemente de bucles For que guardan cada línea en la base de datos
+    Para que sólo se ejecute una vez, se crea el archivo "database_initialized.txt" como indicador de inicialización
+    '''
     
     db = Session()
     

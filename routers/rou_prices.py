@@ -8,9 +8,11 @@ from config.database import Session
 from models.mod_prices import ModelPacks, ModelPrices
 
 
+#CRUD de la tabla Packs
 packs = APIRouter(prefix = "/api/packs", tags = ["Packs"])
 
 
+#READ
 @packs.get("/get_all", response_model = List[PackSchema], status_code = HTTP_200_OK)
 def get_packs():
     db = Session()
@@ -18,6 +20,7 @@ def get_packs():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar a una pack en específico
 @packs.get("/{id_pac}", response_model = PackSchema)
 def get_packs(id_pac: int = Path(ge = 1)):
     db = Session()
@@ -27,6 +30,7 @@ def get_packs(id_pac: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#CREATE
 @packs.post("/create", status_code = HTTP_201_CREATED)
 def create_pack(data_pack:PackSchema):
     db = Session()
@@ -36,6 +40,7 @@ def create_pack(data_pack:PackSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro pack se ha creado correctamente"})
 
 
+#UPDATE
 @packs.put("/{id_pac}", response_model = PackSchema)
 def update_pack(data_update: PackSchema, id_pac: int = Path(ge = 1)):
     db = Session()
@@ -47,6 +52,7 @@ def update_pack(data_update: PackSchema, id_pac: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del pack se han modificado correctamente"})
 
 
+#DELETE
 @packs.delete("/{id_pac}", status_code = HTTP_200_OK)
 def delete_pack(id_pac: int = Path(ge = 1)):
     db = Session()
@@ -59,9 +65,11 @@ def delete_pack(id_pac: int = Path(ge = 1)):
 
 
 
+#CRUD de la tabla Precios
 prices = APIRouter(prefix = "/api/prices", tags = ["Prices"])
 
 
+#READ
 @prices.get("/get_all", response_model = List[PriceSchema], status_code = HTTP_200_OK)
 def get_prices():
     db = Session()
@@ -69,6 +77,7 @@ def get_prices():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar a unos precios en específico
 @prices.get("/{id_pd}", response_model = PriceSchema)
 def get_prices(id_pd: int = Path(ge = 1)):
     db = Session()
@@ -78,6 +87,7 @@ def get_prices(id_pd: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#CREATE
 @prices.post("/create", status_code = HTTP_201_CREATED)
 def create_price(data_price: PriceSchema):
     db = Session()
@@ -87,6 +97,7 @@ def create_price(data_price: PriceSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro precio se ha creado correctamente"})
 
 
+#UPDATE
 @prices.put("/{id_pd}", response_model = PriceSchema)
 def update_price(data_update: PriceSchema, id_pd: int = Path(ge = 1)):
     db = Session()
@@ -101,6 +112,7 @@ def update_price(data_update: PriceSchema, id_pd: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del precio se han modificado correctamente"})
 
 
+#DELETE
 @prices.delete("/{id_pd}", status_code = HTTP_200_OK)
 def delete_price(id_pd: int = Path(ge = 1)):
     db = Session()

@@ -8,9 +8,11 @@ from config.database import Session
 from models.mod_classes import ModelClasses, ModelLevels
 
 
+#CRUD de Clases
 classes = APIRouter(prefix = "/api/class", tags = ["Classes"])
 
 
+#READ
 @classes.get("/get_all", response_model = List[ClassSchema], status_code = HTTP_200_OK)
 def get_classes():
     db = Session()
@@ -18,6 +20,7 @@ def get_classes():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar a una clase en específico
 @classes.get("/{id_cla}", response_model = ClassSchema)
 def get_classes(id_cla: int = Path(ge = 1)):
     db = Session()
@@ -27,6 +30,7 @@ def get_classes(id_cla: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#CREATE
 @classes.post("/create", status_code = HTTP_201_CREATED)
 def create_class(data_class:ClassSchema):
     db = Session()
@@ -36,6 +40,7 @@ def create_class(data_class:ClassSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro clase se ha creado correctamente"})
 
 
+#UPDATE
 @classes.put("/{id_cla}", response_model = ClassSchema)
 def update_class(data_update: ClassSchema, id_cla: int = Path(ge = 1)):
     db = Session()
@@ -47,6 +52,7 @@ def update_class(data_update: ClassSchema, id_cla: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos de la clase se han modificado correctamente"})
 
 
+#DELETE
 @classes.delete("/{id_cla}", status_code = HTTP_200_OK)
 def delete_class(id_cla: int = Path(ge = 1)):
     db = Session()
@@ -58,10 +64,11 @@ def delete_class(id_cla: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Se ha eliminado el registro correctamente"})
 
 
-
+#CRUD de Niveles
 levels = APIRouter(prefix = "/api/level", tags = ["Levels"])
 
 
+#READ
 @levels.get("/get_all", response_model = List[LevelSchema], status_code = HTTP_200_OK)
 def get_levels():
     db = Session()
@@ -69,6 +76,7 @@ def get_levels():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar un nivel en específico
 @levels.get("/{id_level}", response_model = LevelSchema)
 def get_levels(id_level: int = Path(ge = 1)):
     db = Session()
@@ -78,6 +86,7 @@ def get_levels(id_level: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#CREATE
 @levels.post("/create", status_code = HTTP_201_CREATED)
 def create_level(data_level:LevelSchema):
     db = Session()
@@ -87,6 +96,7 @@ def create_level(data_level:LevelSchema):
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "El registro nivel se ha creado correctamente"})
 
 
+#UPDATE
 @levels.put("/{id_level}", response_model = LevelSchema)
 def update_level(data_update: LevelSchema, id_level: int = Path(ge = 1)):
     db = Session()
@@ -98,6 +108,7 @@ def update_level(data_update: LevelSchema, id_level: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos del nivel se han modificado correctamente"})
 
 
+#DELETE
 @levels.delete("/{id_level}", status_code = HTTP_200_OK)
 def delete_level(id_level: int = Path(ge = 1)):
     db = Session()

@@ -12,9 +12,11 @@ from schemas.sch_invoices import InvoiceSchema
 from datetime import date
 
 
+#CRUD de la tabla Facturas
 invoices = APIRouter(prefix = "/api/invoices", tags = ["Invoices"])
 
 
+#READ
 @invoices.get("/get_all", response_model = List[InvoiceSchema], status_code = HTTP_200_OK)
 def get_invoices():
     db = Session()
@@ -22,6 +24,7 @@ def get_invoices():
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando la clave primaria para filtrar una factura en específico
 @invoices.get("/{id_inv}", response_model = List[InvoiceSchema])
 def get_invoice_id(id_inv: int = Path(ge = 1)):
     db = Session()
@@ -31,6 +34,7 @@ def get_invoice_id(id_inv: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#READ utilizando el DNI del estudiante para filtrar sus facturas en específico
 @invoices.get("/{DNI_stu}/", response_model = List[InvoiceSchema])
 def get_invoice_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A-HJ-NP-TV-Z])$')):
     db = Session()
@@ -41,6 +45,8 @@ def get_invoice_DNI(DNI_stu: str = Path(pattern = r'^([XYZ]\d{7}[A-Z]|\d{8}[A-HJ
     return JSONResponse(status_code = HTTP_200_OK, content = jsonable_encoder(result))
 
 
+#CREATE
+#La factura sólo se crea si es única. Es decir, si el estudiante y la fecha son una combinación única
 @invoices.post("/generate", status_code = HTTP_201_CREATED)
 def generate_invoice():
     db = Session()
@@ -63,6 +69,7 @@ def generate_invoice():
     return JSONResponse(status_code = HTTP_201_CREATED, content = {"message": "Las facturas se han generado correctamente"})
 
 
+#UPDATE
 @invoices.put("/{id_inv}", response_model = InvoiceSchema)
 def update_invoice(data_update: InvoiceSchema, id_inv: int = Path(ge = 1)):
     db = Session()
@@ -76,6 +83,7 @@ def update_invoice(data_update: InvoiceSchema, id_inv: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Los datos de la factura se han modificado correctamente"})
 
 
+#DELETE
 @invoices.delete("/{id_inv}", status_code = HTTP_200_OK)
 def delete_invoice(id_inv: int = Path(ge = 1)):
     db = Session()
@@ -87,8 +95,16 @@ def delete_invoice(id_inv: int = Path(ge = 1)):
     return JSONResponse(status_code = HTTP_200_OK, content = {"message": "Se ha eliminado el registro correctamente"})
 
 
-#función calcular precios
 def invoice_calculation(id_stu1):
+    '''
+    Esta función calcula el precio a pagar por mes de cada estudiante
+    teniendo en cuenta los descuentos de los packs y el descuento por traer un familiar.
+    Al utilizar la ruta post de Facturas, se calculan los montos a pagar y se generan los registros de facturas.
+    Primero se filtra por las clases en las que está activo el estudiante
+    Se genera una lista de las claves primarias de los precios que debe pagar por clase
+    Al contar cada uno de los elementos de esa lista, se sabe qué precio utilizar
+    Finalmente se suma todo y se calcula el descuento de familiar (si aplica)
+    '''
     db = Session()
     result = db.query(ModelStudents.DNI_stu, ModelPrices.id_pd
                       ).join(StudentsClasses, ModelStudents.id_stu == StudentsClasses.id_stu1

@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 
 
-#tabla estudiantes: incluye las distintas columnas y el tipo de dato que debería tener cada una
+#Tabla principal de Estudiantes: incluye las distintas columnas y el tipo de dato que debería tener cada una con algunas validaciones
 class ModelStudents(Base):
 
     __tablename__ = "students"
@@ -23,6 +23,7 @@ class ModelStudents(Base):
     invoices = relationship("ModelInvoices", back_populates = "students1")
 
 
+#Tabla intermedia que relaciona Estudiantes con ClasesNiveles
 class StudentsClasses(Base):
 
     __tablename__ = "students_classes"

@@ -62,6 +62,12 @@ data_classes_levels_packs = [{"id_cla1": 1, "id_level1": 1, "id_pac1": 1},
 
 data_students = [{"name_stu": "Catalina", "last1_stu": "de", "last2_stu": "Aragón", "DNI_stu": "12345678J", 
                   "birth_date": "1973-02-04", "age_stu": 50, "tel_stu": "98765432", "mail_stu": "catalina-aragon@hotmail.com", 
+                  "active_stu": True, "fam_discount": False},
+                  {"name_stu": "Ana", "last1_stu": "de", "last2_stu": "Armas", "DNI_stu": "12345678X", 
+                  "birth_date": "1973-02-04", "age_stu": 50, "tel_stu": "98765432", "mail_stu": "ana-de-armas@hotmail.com", 
+                  "active_stu": True, "fam_discount": True},
+                  {"name_stu": "Francisca", "last1_stu": "de", "last2_stu": "Casas", "DNI_stu": "12345678H", 
+                  "birth_date": "1973-02-04", "age_stu": 50, "tel_stu": "98765432", "mail_stu": "francisca-casas@hotmail.com", 
                   "active_stu": True, "fam_discount": False}]
 
 
@@ -70,4 +76,16 @@ data_students_classes = [{"id_stu1": 1, "id_cla_level1": 3, "registration_date":
                          {"id_stu1": 1, "id_cla_level1": 5, "registration_date": "2023-03-01", "active_stu_cla": True},
                          {"id_stu1": 1, "id_cla_level1": 8, "registration_date": "2023-03-01", "active_stu_cla": True},
                          {"id_stu1": 1, "id_cla_level1": 17, "registration_date": "2023-03-01", "active_stu_cla": True},
-                         {"id_stu1": 1, "id_cla_level1": 10, "registration_date": "2023-03-01", "active_stu_cla": True}]
+                         {"id_stu1": 1, "id_cla_level1": 10, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 2, "id_cla_level1": 3, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 2, "id_cla_level1": 4, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 2, "id_cla_level1": 5, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 2, "id_cla_level1": 8, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 2, "id_cla_level1": 17, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 2, "id_cla_level1": 10, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 3, "id_cla_level1": 3, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 3, "id_cla_level1": 4, "registration_date": "2023-03-01", "active_stu_cla": False},
+                         {"id_stu1": 3, "id_cla_level1": 5, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 3, "id_cla_level1": 8, "registration_date": "2023-03-01", "active_stu_cla": False},
+                         {"id_stu1": 3, "id_cla_level1": 17, "registration_date": "2023-03-01", "active_stu_cla": True},
+                         {"id_stu1": 3, "id_cla_level1": 10, "registration_date": "2023-03-01", "active_stu_cla": False}]

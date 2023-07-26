@@ -10,6 +10,7 @@ from models.mod_invoices import ModelInvoices
 from models.mod_classes import ClassesLevels
 from schemas.sch_invoices import InvoiceSchema
 from datetime import date
+import logging
 
 
 #CRUD de la tabla Facturas
@@ -132,10 +133,15 @@ def invoice_calculation(id_stu1):
             else:
                 tot_month = tot_month
         
-        fam_discount = db.query(ModelStudents.fam_discount).filter(ModelStudents.id_stu == id_stu1).first()
+        result_discount = db.query(ModelStudents.fam_discount).filter(ModelStudents.id_stu == id_stu1).first()
+        logging.debug(f"Esta línea se está ejecutando. fam_discount es: {result_discount} y su tipo de dato es: {type(result_discount)}")
         
-        if fam_discount == True:
+        if result_discount.fam_discount == True:
+            logging.debug("Entrada en el if de descuento familiar")
+            type_fam_discount = type(result_discount.fam_discount)
+            logging.debug(f"El tipo de dato dentro del if es: {type_fam_discount} y el valor es: {result_discount.fam_discount}")
             tot_month = 0.9*tot_month
+            return tot_month
         return tot_month
 
     except ValueError:
